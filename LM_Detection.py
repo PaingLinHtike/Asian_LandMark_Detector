@@ -16,14 +16,10 @@ df = pd.read_csv(labels)
 labels = dict(zip(df.id, df.name))
 
 def build_model():
-    hub_layer = hub.KerasLayer(
-        model_url,
-        input_shape=(321, 321, 3),
-        output_key="predictions:logits"
-    )
+    hub_layer = hub.KerasLayer(model_url, trainable=False)
 
     inputs = tf.keras.Input(shape=(321, 321, 3))
-    outputs = tf.keras.layers.Lambda(lambda x: hub_layer(x))(inputs)
+    outputs = hub_layer(inputs)
 
     model = tf.keras.Model(inputs, outputs)
     return model
@@ -31,13 +27,14 @@ def build_model():
 classifier = build_model()
 def image_processing(image):
     img_shape = (321, 321)
-    img = PIL.Image.open(image)
-    img = img.resize(img_shape)
+    img = PIL.Image.open(image).resize(img_shape)
+
     img1 = img
-    img = np.array(img) / 255.0
+    img = np.array(img).astype(np.float32)
     img = img[np.newaxis]
+
     result = classifier.predict(img)
-    return labels[np.argmax(result)],img1
+    return labels[np.argmax(result)], img1
 
 def get_map(loc):
     geolocator = Nominatim(user_agent="Your_Name")

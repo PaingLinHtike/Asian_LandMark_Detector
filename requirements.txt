@@ -1,3 +1,5 @@
+setuptools==69.5.1
+
 streamlit
 numpy==1.26.4
 pandas
@@ -6,6 +8,4 @@ geopy
 
 tensorflow==2.15.0
 tensorflow-hub==0.16.1
-
-setuptools>=70
 protobuf<5
