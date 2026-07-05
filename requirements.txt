@@ -5,3 +5,5 @@ pandas
 geopy
 tensorflow==2.21.0
 tensorflow-hub==0.16.1
+tf-keras==2.19.0
+setuptools
