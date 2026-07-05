@@ -23,14 +23,14 @@ def build_model():
     )
 
     inputs = tf.keras.Input(shape=(321, 321, 3))
-    outputs = hub_layer(inputs)
+    outputs = tf.keras.layers.Lambda(lambda x: hub_layer(x))(inputs)
 
     model = tf.keras.Model(inputs, outputs)
     return model
 
+classifier = build_model()
 def image_processing(image):
     img_shape = (321, 321)
-    classifier = build_model()
     img = PIL.Image.open(image)
     img = img.resize(img_shape)
     img1 = img
